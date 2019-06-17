@@ -1,0 +1,27 @@
+
+.full-width {
+    width: 100%;
+}
+
+.button-row{
+    margin-right: 8px;
+}
+
+.table-container {
+    height: 400px;
+    overflow: auto;
+}
+  
+table {
+    width: 100%;
+}
+
+.share-card {
+    min-width: 100%;
+    margin-top:10px;
+}
+
+.share-header-image {
+    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+    background-size: cover;
+}
