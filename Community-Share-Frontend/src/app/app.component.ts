@@ -51,7 +51,7 @@ export class AppComponent implements OnInit{
         }
       }
     );
-    
     this.modalRef.hide();
   }
+
 }

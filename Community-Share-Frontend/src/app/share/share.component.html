@@ -1,46 +1,86 @@
-
+<!--create post section start-->
 <mat-card class="share-card">
     <mat-card-header>
       <div mat-card-avatar class="share-header-image"></div>
       <mat-card-title>{{ username }}</mat-card-title>
-      <mat-card-subtitle>Category</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      <form>
+      <form [formGroup]="shareForm">
           <mat-form-field class="full-width">
-              <textarea matInput placeholder="What do you want to share?"></textarea>
+              <textarea matInput formControlName="postText" placeholder="What do you want to share?"></textarea>
           </mat-form-field>
       </form>
     </mat-card-content>
     <mat-card-actions>
-        <button mat-flat-button color="primary" class="button-row">Upload File</button>
-        <button mat-flat-button color="primary" class="button-row">Share!</button>
+        <form [formGroup]="shareForm">
+      <section class="share-section">
+          <input type="file" formControlName="files" multiple/>
+        <button mat-flat-button color="primary" class="share-button" (click)="openModal(shareModal)">Share!</button>
+      </section>
+    </form>
     </mat-card-actions>
-  </mat-card>
-  <div>
+</mat-card>
+<!--create post section end-->
 
-<div class="table-container">
+<!--share with modal start-->
+<ng-template #shareModal>
+  <div class="modal-header">
+      <h4 class="modal-title pull-left">Share With</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+  <div class="modal-body">
+      <form [formGroup]="shareForm">
+        <section>
+          <mat-checkbox formControlName="all">All</mat-checkbox>
+        </section>
+        <section>
+          <mat-checkbox formControlName="self">Self</mat-checkbox>
+        </section>
+        <section *ngFor="let item of recipientList">
+          <mat-checkbox [checked]="true" [disabled]="true">{{item}}</mat-checkbox>
+        </section>
+        <div class="input-group">
+          <mat-form-field class="recipient-width">
+            <input matInput formControlName="temp" placeholder="Add Recipient (knox.id)">
+          </mat-form-field>
+          <button mat-icon-button aria-label="Add new" (click)="addRecipient()">
+              <mat-icon>add</mat-icon>
+          </button>
+        </div>
+      </form>
+  </div>
+  <div class="modal-footer">
+      <button type="button" mat-flat-button color="primary" (click)="onShare(shareModal)">Share</button>
+  </div>
+</ng-template>
+<!--share with modal end-->
 
-  <table mat-table [dataSource]="dataSource">
+<!--post table section start-->
+<div class="table-container" *ngIf="showTable">
 
-    <ng-container matColumnDef="datetime">
-      <th mat-header-cell *matHeaderCellDef> Date & Time </th>
-      <td mat-cell *matCellDef="let data"> {{data.datetime}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="username">
-      <th mat-header-cell *matHeaderCellDef> Username </th>
-      <td mat-cell *matCellDef="let data"> {{data.username}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="shared">
-      <th mat-header-cell *matHeaderCellDef> Shared </th>
-      <td mat-cell *matCellDef="let data"> {{data.shared}} </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-  </table>
-
-</div>
+    <table mat-table [dataSource]="posts">
+  
+      <ng-container matColumnDef="datetime">
+        <th mat-header-cell *matHeaderCellDef> Date & Time </th>
+        <td mat-cell *matCellDef="let data"> {{data.date}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="shared">
+        <th mat-header-cell *matHeaderCellDef> Shared </th>
+        <td mat-cell *matCellDef="let data"> {{data.postText}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="username">
+        <th mat-header-cell *matHeaderCellDef> Username </th>
+        <td mat-cell *matCellDef="let data"> {{data.sharedBy}} </td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  
+    </table>
+  
+  </div>
+  <!--post table section end-->

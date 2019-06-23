@@ -1,6 +1,6 @@
-<button mat-raised-button color="primary" class="fab-button"  (click)="openModal(template)">{{ username }}</button>
+<button mat-raised-button color="primary" class="fab-button"  (click)="openModal(loginModal)">{{ username }}</button>
 <!-- Login section start-->
-<ng-template #template>
+<ng-template #loginModal>
         <div class="modal-header">
             <h4 class="modal-title pull-left">Login</h4>
             <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
@@ -10,10 +10,10 @@
         <div class="modal-body">
             <form [formGroup]="loginForm">
                 <div class="form-group">
-                <label for="username">Knox ID</label>
-                <div class="input-group">
-                    <input id="username" class="form-control" formControlName="username" placeholder="knox.id">
-                </div>
+                    <label for="username">Knox ID</label>
+                    <div class="input-group">
+                        <input id="username" class="form-control" formControlName="username" placeholder="knox.id">
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
@@ -24,12 +24,12 @@
             </form>
         </div>
         <div class="modal-footer">
-            <button type="button" mat-flat-button color="primary" (click)="onLogin(template)">Login</button>
+            <button type="button" mat-flat-button color="primary" (click)="onLogin(loginModal)">Login</button>
         </div>
     </ng-template>
     <!-- Login section end-->
 <!--Homepage section start-->
-<mat-tab-group mat-stretch-tabs [color]="accent" [backgroundColor]="background">
+<!-- <mat-tab-group mat-stretch-tabs [color]="accent" [backgroundColor]="background">
     <mat-tab> 
     <ng-template mat-tab-label class="mat-tab-header-bar">
         <mat-icon class="tab-icon">pets</mat-icon>
@@ -44,5 +44,8 @@
         </ng-template>
         <app-groups></app-groups>
     </mat-tab>
-</mat-tab-group>
+</mat-tab-group> -->
 <!--Homepage section end-->
+
+<!--Simpler homepage before project is feature complete-->
+<app-share></app-share>

@@ -1,5 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { AuthenticationService } from '../services/authentication.service';
+import { Post } from '../model/post';
+import { PostService } from '../services/post.service';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-share',
@@ -10,7 +14,29 @@ export class ShareComponent implements OnInit {
 
   username: string = "Anonymous";
 
-  constructor(private authService:AuthenticationService) { }
+  displayedColumns = ['date', 'sharedBy', 'postText'];
+  posts: Post[];
+  showTable:boolean = false;
+
+  recipientList: string[] = [];
+
+  shareForm = this.fb.group({
+    postText: [""],
+    sharedBy: [""],
+    files: [],
+    all:[""],
+    self:[""],
+    recipients:[""],
+    temp:[""]
+  });
+
+  modalRef: BsModalRef;
+  constructor(private modalService: BsModalService,
+    private fb: FormBuilder,
+    private authService:AuthenticationService,
+    private postService:PostService) 
+    { 
+    }
 
   ngOnInit() {
     this.authService.username.subscribe(
@@ -22,27 +48,32 @@ export class ShareComponent implements OnInit {
       }
     );
   }
-  displayedColumns = ['datetime', 'username', 'shared'];
-  dataSource = ELEMENT_DATA;
+
+  showPosts() {
+    this.postService.getPosts()
+      .subscribe((data: Post[]) =>{
+        if(data != null)
+          this.posts = { ...data };
+        else
+          this.showTable = false;
+        }
+      );
+  }
+
+  addRecipient(){
+    this.recipientList.push(this.shareForm.controls.temp.value);
+    this.shareForm.controls.temp.setValue("");
+    this.shareForm.controls.recipients.setValue(this.recipientList);
+  }
+
+  onShare(template: TemplateRef<any>){
+    console.log(this.shareForm.getRawValue());
+    this.modalRef.hide();
+  }
+
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template);
+  }
 
 }
-
-export interface PeriodicElement {
-  datetime: string;
-  username: string;
-  shared: string;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  {datetime: '1', username: 'Hydrogen', shared: 'Hay day'},
-  {datetime: '2', username: 'Helium', shared: 'Hello may day '},
-  {datetime: '3', username: 'Lithium', shared: 'Lithium'},
-  {datetime: '4', username: 'Beryllium', shared: 'Be'},
-  {datetime: '5', username: 'Boron', shared: 'B'},
-  {datetime: '6', username: 'Carbon', shared: 'C'},
-  {datetime: '7', username: 'Nitrogen', shared: 'N'},
-  {datetime: '8', username: 'Oxygen', shared: 'O'},
-  {datetime: '9', username: 'Fluorine', shared: 'F'},
-  {datetime: '10', username: 'Neon', shared: 'Ne'},
-];
 

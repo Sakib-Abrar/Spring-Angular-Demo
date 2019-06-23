@@ -2,6 +2,8 @@ package sakib.abrar.communityshare.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Date;
+
 import lombok.Data;
 
 @Entity
@@ -32,16 +34,20 @@ public class Post implements Serializable {
     @Column(name = "shared_with")
     private String sharedWith;
 
+    @Column(name = "shared_date")
+    private Date date;
+
     protected Post() {
     }
 
-    public Post(int postType, String postText, String link, int vote, String sharedBy, String sharedWith) {
+    public Post(int postType, String postText, String link, int vote, String sharedBy, String sharedWith, Date date) {
         this.postType = postType;
         this.postText = postText;
         this.link = link;
         this.vote = vote;
         this.sharedBy = sharedBy;
         this.sharedWith = sharedWith;
+        this.date = date;
     }
 
     @Override

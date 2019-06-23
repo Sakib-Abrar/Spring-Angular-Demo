@@ -24,7 +24,7 @@ public class PostController {
 
         ArrayList<Post> posts = new ArrayList<>();
 
-        for(Post entry:repository.findBySharedWith("public")){
+        for(Post entry:repository.findBySharedWith("all")){
             posts.add(entry);
             System.out.println(entry.toString());
         }
